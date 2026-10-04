@@ -37,7 +37,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 @DisplayName("UserRepositoryMySQL")
 @ExtendWith(MockitoExtension.class)
-class UserRepositoryMySQLTest {
+class UserRepositoryTest {
 
   private static final String ID = "u-001";
   private static final String NAME = "John Doe";
@@ -53,14 +53,14 @@ class UserRepositoryMySQLTest {
   @Mock private PreparedStatement statement;
   @Mock private ResultSet resultSet;
 
-  private UserRepositoryMySQL repository;
+  private UserRepository repository;
   private UserModel userModel;
   private UserId userId;
   private UserEmail userEmail;
 
   @BeforeEach
   void setUp() {
-    repository = new UserRepositoryMySQL(dataSource);
+    repository = new UserRepository(dataSource);
     userId = new UserId(ID);
     userEmail = new UserEmail(EMAIL);
     userModel =

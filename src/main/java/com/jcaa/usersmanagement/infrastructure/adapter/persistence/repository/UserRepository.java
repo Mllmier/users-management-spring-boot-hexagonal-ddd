@@ -28,8 +28,8 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryMySQL
-    implements SaveUserPort,
+public class UserRepository
+        implements SaveUserPort,
         UpdateUserPort,
         GetUserByIdPort,
         GetUserByEmailPort,
@@ -37,32 +37,32 @@ public class UserRepositoryMySQL
         DeleteUserPort {
 
   private static final String SQL_INSERT =
-      "INSERT INTO users "
-      + "(id, name, email, password, role, status, created_at, updated_at) "
-      + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
+          "INSERT INTO users "
+                  + "(id, name, email, password, role, status, created_at, updated_at) "
+                  + "VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
   private static final String SQL_UPDATE =
-      "UPDATE users SET name = ?, email = ?, password = ?, role = ?, status = ?, updated_at = NOW() "
-      + "WHERE id = ?";
+          "UPDATE users SET name = ?, email = ?, password = ?, role = ?, status = ?, updated_at = CURRENT_TIMESTAMP "
+                  + "WHERE id = ?";
 
   private static final String SQL_SELECT_BY_ID =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "WHERE id = ? LIMIT 1";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "WHERE id = ? LIMIT 1";
 
   private static final String SQL_SELECT_BY_EMAIL =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "WHERE email = ? LIMIT 1";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "WHERE email = ? LIMIT 1";
 
   private static final String SQL_SELECT_ALL =
-      "SELECT id, name, email, password, role, status, created_at, updated_at "
-      + "FROM users "
-      + "ORDER BY name ASC";
+          "SELECT id, name, email, password, role, status, created_at, updated_at "
+                  + "FROM users "
+                  + "ORDER BY name ASC";
 
   private static final String SQL_DELETE =
-        "DELETE FROM users "
-        + "WHERE id = ?";
+          "DELETE FROM users "
+                  + "WHERE id = ?";
 
   private final DataSource dataSource;
 
@@ -164,6 +164,6 @@ public class UserRepositoryMySQL
 
   private UserModel findByIdOrFail(final UserId userId) {
     return getById(userId)
-        .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
+            .orElseThrow(() -> UserNotFoundException.becauseIdWasNotFound(userId.value()));
   }
 }
