@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Servidor de Base de Datos MySQL
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: crud_usuarios
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Aplicación Spring Boot
+  app:
+    build: .
+    container_name: springboot_app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: mysqldb
+      DB_PORT: 3306
+      DB_NAME: crud_usuarios
+      DB_USERNAME: root
+      DB_PASSWORD: rootpassword
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USERNAME: lizleonmier@gmail.com
+      SMTP_PASSWORD: govvnaporfhijdyu
+      SMTP_FROM_ADDRESS: lizleonmier@gmail.com
+      SMTP_FROM_NAME: Gestion de Usuarios
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
